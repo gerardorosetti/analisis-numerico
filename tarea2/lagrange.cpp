@@ -63,13 +63,13 @@ int main (int argc, char * argv[])
         //Lagrange
         double y_res = 0.0;
         for (int i = 0; i <= n; ++i) {
-            double Z = 1.0;
+            double z = 1.0;
             for (int j = 0; j <= n; ++j) {
                 if (i != j) {
-                    Z = Z * (xa - x[j]) / (x[i] - x[j]);
+                    z = z * (xa - x[j]) / (x[i] - x[j]);
                 }
             }
-            y_res += Z * f[i];
+            y_res += z * f[i];
         }
 
         if (xa > x[n] || xa < x[0])
