@@ -5,6 +5,8 @@
 int main (int argc, char * argv[])
 {
 
+    //return 0.1 * std::pow(x, 3) + 5 * std::pow(x, 2) - exp(x);
+
     std::ifstream data_file{"data.txt"};
 
     std::vector<std::string> lines{};

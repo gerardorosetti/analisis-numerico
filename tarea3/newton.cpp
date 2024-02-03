@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iomanip>
 
-void Funcion(double x, double &y, double &yd)
+void function(double x, double &y, double &yd)
 {
     y = std::pow(x, 3) - 5.0 * std::pow(x, 2) + 6.0 * x;
     yd = 3.0 * std::pow(x, 2) - 10.0 * x + 6.0;
@@ -24,7 +24,7 @@ int main() {
     do
     {
         XB = x;
-        Funcion(x, y, yd);
+        function(x, y, yd);
         double x_old = x;
         x = x - y / yd;
         std::cout << ++n << std::setw(space) << x_old << std::setw(space) << y << std::setw(space) << x << std::endl;

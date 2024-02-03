@@ -3,8 +3,9 @@
 #include <iomanip>
 
 // Definición de la función que se va a evaluar
-double fun(double x) {
-    return x * x * x - 3 * x * x - x + 3;
+double function(double x) {
+    // return x * x * x - 3 * x * x - x + 3;
+    return 0.1 * std::pow(x, 3) - 5 * std::pow(x, 2) - x + 4 + exp(-x);
 }
 
 int main() {
@@ -22,12 +23,12 @@ int main() {
     // std::cin >> il;
 
     a = 0.0;
-    c = 3.0;
+    c = 1.0;
     ep = 0.0001;
     il = 20;
 
-    double ya = fun(a);
-    double yc = fun(c);
+    double ya = function(a);
+    double yc = function(c);
     int it = 0;
 
     size_t space = 14;
@@ -38,7 +39,7 @@ int main() {
     {
         it++;
         double b = (a + c) / 2;
-        double yb = fun(b);
+        double yb = function(b);
 
         if (it < 10)
         {
@@ -70,14 +71,14 @@ int main() {
 
     std::cout << "Resultado Final: Raiz Aproximada = " << (a + c) / 2 << std::endl;
 
-    int ks;
-    std::cout << "Ingrese 1 para Continuar, 0 para Terminar: ";
-    std::cin >> ks;
+    // int ks;
+    // std::cout << "Ingrese 1 para Continuar, 0 para Terminar: ";
+    // std::cin >> ks;
 
-    if (ks == 1)
-    {
-        main();
-    }
+    // if (ks == 1)
+    // {
+    //     main();
+    // }
 
     return 0;
 }
