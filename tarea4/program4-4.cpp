@@ -120,7 +120,8 @@ int main()
     std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
     std::cout << "N" << std::setw(space) << "X" << std::setw(space) << "F(X)" << std::setw(space) << "W" << std::endl;
     std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
-    
+    std::cout << std::fixed << std::setprecision(8);
+
     double XI = 0;
 
     for (size_t j = 1; j <= N; ++j)
