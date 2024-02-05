@@ -73,14 +73,14 @@ int main()
     std::cout << "Ingrese 0 para la regla del trapecio o 1 para la regla de Simpson: ";
     std::cin >> option;
 
-    std::string question = (option == 0) ? "intervalos" : "datos"; 
-    std::cout << "Ingrese el número de " << question << " n: ";
+    std::string question = (option == 0) ? "intervalos" : "datos";
+    std::cout << "Ingrese el número de " << question << " N: ";
     std::cin >> n;
 
-    std::cout << "Ingrese el límite inferior de integración a: ";
+    std::cout << "Ingrese el límite inferior de integración A: ";
     std::cin >> a;
 
-    std::cout << "Ingrese el límite superior de integración b: ";
+    std::cout << "Ingrese el límite superior de integración B: ";
     std::cin >> b;
 
     if ((n > 0 && option == 0) || (option == 1 && n > 1))
@@ -94,5 +94,5 @@ int main()
         std::cout << "La entrada no es válida, por favor repita." << std::endl;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
