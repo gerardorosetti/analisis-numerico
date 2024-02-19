@@ -4,7 +4,11 @@
 
 double function(double x)
 {
-    return pow((1 + std::pow(x/2, 2)), 2) * M_PI;
+    // return pow(x, 2) + pow(x, 9) - log(x * 0.2);
+    // return sin(x * M_PI / 180); // Degrees
+    // return sin(x);
+    // return pow((1 + std::pow(x/2, 2)), 2) * M_PI;
+    return log(1 + x)/x;
 }
 
 double trapz(double a, double b, int n)
@@ -31,18 +35,21 @@ double simpson(double a, double b, int n)
     int ls = (n / 2 * 2 == n) ? 0 : 3;
     double h = (b - a) / n;
 
-    for (size_t i = 0; i <= 3; ++i)
+    if (ls == 3)
     {
-        double x = a + h * i;
-        double w = (i == 0 || i == 3) ? 1 : 3;
-        ss = ss + w * function(x);
-    }
+        for (size_t i = 0; i <= 3; ++i)
+        {
+            double x = a + h * i;
+            double w = (i == 0 || i == 3) ? 1 : 3;
+            ss = ss + w * function(x);
+        }
 
-    ss = ss * h * 3 / 8;
+        ss = ss * h * 3 / 8;
 
-    if (n == 3)
-    {
-        return ss;
+        if (n == 3)
+        {
+            return ss;
+        }
     }
 
     for (size_t i = 0; i <= n - ls; ++i)
@@ -70,7 +77,7 @@ int main()
     double a, b;
     size_t n, option;
 
-    std::cout << "Ingrese 0 para la regla del trapecio o 1 para la regla de Simpson: ";
+    std::cout << "Ingrese 0 para la Regla del Trapecio o 1 para la regla de Simpson: ";
     std::cin >> option;
 
     std::string question = (option == 0) ? "intervalos" : "datos";
@@ -86,7 +93,7 @@ int main()
     if ((n > 0 && option == 0) || (option == 1 && n > 1))
     {
         double result = (option == 0) ? trapz(a, b, n) : simpson(a, b, n);
-        std::cout << std::fixed << std::setprecision(5);
+        std::cout << std::fixed << std::setprecision(8);
         std::cout << "\nResultado final: " << result << std::endl;
     }
     else

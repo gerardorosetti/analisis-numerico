@@ -2,9 +2,13 @@
 #include <cmath>
 #include <iomanip>
 
-void function(double &f, double x)
+double function(double x)
 {
-    f = sin(x);
+    // return pow(x, 2) + pow(x, 9) - log(x * 0.2);
+    // return sin(x * M_PI / 180); // Degrees
+    // return sin(x);
+    // return pow((1 + std::pow(x/2, 2)), 2) * M_PI;
+    return log(1 + x)/x;
 }
 
 int main()
@@ -12,6 +16,7 @@ int main()
     int n;
     double a, b;
 
+    std::cout << "Los Ordenes de Cuadratula Disponibles son: N = 2, 3, 4, 5, 6, 8, 10" << std::endl;
     std::cout << "Ingrese el número de puntos N: ";
     std::cin >> n;
 
@@ -23,6 +28,11 @@ int main()
     else if (n == 7 || n == 9 || n == 1)
     {
         std::cout << "Error: N = 1, 7 y 9 no están disponibles" << std::endl;
+        return EXIT_FAILURE;
+    }
+    else if (n > 10)
+    {
+        std::cout << "Error: N > 10 no están disponibles" << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -114,9 +124,9 @@ int main()
 
     size_t space = 14;
     std::cout << "Cuadricula:" << std::endl;
-    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - - -" << std::endl;
     std::cout << "N" << std::setw(space) << "X" << std::setw(space) << "F(X)" << std::setw(space) << "W" << std::endl;
-    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - - -" << std::endl;
     std::cout << std::fixed << std::setprecision(8);
 
     double xi = 0;
@@ -124,17 +134,20 @@ int main()
     for (size_t i = 1; i <= n; ++i)
     {
         double x = xa[i];
-        double f;
-        function(f, x);
+        double f = function(x);
         xi += f * w[i];
+        if (i < 10)
+        {
+            std::cout << 0;
+        }
         std::cout << i << std::setw(space) << x << std::setw(space) << f << std::setw(space) << w[i] << std::endl;
     }
 
     xi *= (b - a) / 2;
 
-    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - - -" << std::endl;
     std::cout << "El resultado final: " << xi << std::endl;
-    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - - -" << std::endl;
 
     return EXIT_SUCCESS;
 }
