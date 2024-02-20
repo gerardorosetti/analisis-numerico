@@ -1,9 +1,17 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <iomanip>
 
 const short MAX_POINTS = 10;
 const short MAX_DERIVATIVES = 11;
+
+float function(float x)
+{
+    // return pow(x, 3);
+    // return sin(x);
+    return log(1 + x)/x;
+}
 
 void gauss(float** A, int N)
 {
@@ -66,25 +74,30 @@ void gauss(float** A, int N)
 int main()
 {
     int N, KM, KDR, KN;
-    float EL[MAX_POINTS + 1], B[MAX_POINTS + 1][MAX_DERIVATIVES + 1], C[MAX_POINTS + 1], CF[MAX_DERIVATIVES + 1];
+    float EL[MAX_POINTS + 3], B[MAX_POINTS + 3][MAX_DERIVATIVES + 3], C[MAX_POINTS + 3], CF[MAX_DERIVATIVES + 3];
     float FF, F, Z;
 
-    float **A = new float*[MAX_POINTS + 1];
-    for (size_t i = 0; i < MAX_POINTS + 1; i++)
+    float **A = new float*[MAX_POINTS + 3];
+    for (size_t i = 0; i < MAX_POINTS + 3; i++)
     {
-        A[i] = new float[MAX_DERIVATIVES + 1];
+        A[i] = new float[MAX_DERIVATIVES + 3];
     }
-    
-    std::cout << "CSL/F5 -1 CALCULO DE APROXIMACIONES POE DIFERENCIAS" << std::endl << std::endl;
-    std::cout << "NUMERO DE PUNTOS?" << std::endl;
+
+    std::cout << "Calculo de Aproximaciones por Diferencias" << std::endl << std::endl;
+    std::cout << "Ingrese el Numero de Puntos: ";
     std::cin >> KM;
-    std::cout << "NUMERO DE PUNTOS EN LA RETICULA?" << std::endl;
+    if (KM > MAX_POINTS)
+    {
+        std::cout << "El numero de puntos no puede ser mayor a 10, intente nuevamente" << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << "\nNUMERO DE PUNTOS EN LA RETICULA?\n" << std::endl;
     for (int K = 1; K <= KM; ++K)
     {
-        std::cout << "INDICE DEL PUNTO " << K + 1 << "?" << std::endl;
+        std::cout << "Indice del Punto " << K << ": ";
         std::cin >> EL[K];
     }
-    std::cout << "DE EL ORDEN DE LA DERIVADA" << std::endl;
+    std::cout << "\nIngrese el Numero de Orden de la Derivada: ";
     std::cin >> KDR;
     Z = 1.0;
 
@@ -132,14 +145,16 @@ int main()
     {
         CF[K] = A[K][KM+1] / F;
     }
-    std::cout << "ESQUEMA DE DIFERENCIAS" << std::endl;
+    std::cout << "\n-------------------------------------------" << std::endl;
+    std::cout << "Esquema de Diferencias" << std::endl;
+    std::cout << std::fixed << std::setprecision(5);
     for (int K = 1; K <= KM; ++K)
     {
         float FINV = 1.0 / F;
-        std::cout << "+[" << CF[K] << "/(" << FINV << "" << KDR << ")]  F(" << EL[K] << ")" << std::endl;
+        std::cout << "+[ " << CF[K] << "/(" << FINV << " H**" << KDR << ")]  F(" << EL[K] << "H)" << std::endl;
     }
     std::cout << std::endl;
-    std::cout << "TERMINO DEL ERROR" << std::endl;
+    std::cout << "Termino del Error" << std::endl;
     for (int K = 1; K <= KM + 2; ++K)
     {
         if (std::abs(C[K]) < 0.00000001) C[K] = 0;
@@ -157,18 +172,29 @@ int main()
         int NH = KM1 - KDR;
         if ((K == KM + 1) && (CM != 0))
         {
-            std::cout << "(" << CM << "/" << DD << ")" << NH << "  F^(" << KM1 << ")" << std::endl;
+            std::cout << "(" << CM << "/" << DD << ")H**" << NH << "  F^(" << KM1 << ")" << std::endl;
         }
         if (K == KM + 2)
         {
-            std::cout << "(" << CM << "/" << DD << ")" << NH << "  F^(" << KM1 << ")" << std::endl;
+            std::cout << "(" << CM << "/" << DD << ")H**" << NH << "  F^(" << KM1 << ")" << std::endl;
         }
         DD *= static_cast<float>(K);
     }
-    std::cout << "----------------------------------" << std::endl << std::endl;
-    std::cout << "TERMINAR" << std::endl;
+    std::cout << "-------------------------------------------" << std::endl << std::endl;
 
-    for (size_t i = 0; i < MAX_POINTS + 1; ++i)
+    float result = 0;
+    float H = 0.5;
+    float point = 2;
+    for (int K = 1; K <= KM; ++K)
+    {
+        float FINV = 1.0 / F;
+        result += (CF[K] / (FINV * pow(H,KDR))) * function(point + EL[K] * H);
+    }
+
+    std::cout << "Mostrando Ejemplo con los Valores:\nH = " << H << "\nPunto: " << point << std::endl;
+    std::cout << "Resultado: " << result << std::endl;
+
+    for (size_t i = 0; i < MAX_POINTS + 3; ++i)
     {
         delete[] A[i];
     }

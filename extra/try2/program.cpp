@@ -6,6 +6,10 @@
 const short MAX_POINTS = 10;
 const short MAX_DERIVATIVES = 11;
 
+float function(float x){
+    return x * x * x;
+}
+
 void gauss(std::vector<std::vector<float>>& A, int N)
 {
     int NM = N - 1;
@@ -68,7 +72,9 @@ int main()
 {
     int N, KM, KDR, KN;
     float EL[MAX_POINTS + 1], B[MAX_POINTS + 1][MAX_DERIVATIVES + 1], C[MAX_POINTS + 1], CF[MAX_DERIVATIVES + 1];
-    std::vector<std::vector<float>> A(MAX_POINTS + 1, std::vector<float>(MAX_DERIVATIVES + 1, 0));
+    // std::vector<std::vector<float>> A(MAX_POINTS + 1, std::vector<float>(MAX_DERIVATIVES + 1, 0));
+    // std::vector<std::vector<float>> A(MAX_DERIVATIVES + 1, std::vector<float>(MAX_DERIVATIVES + 1, 0));
+    std::vector<std::vector<float>> A(MAX_POINTS + 3, std::vector<float>(MAX_DERIVATIVES + 3, 0));
     float FF, F, Z;
 
     std::cout << "Calculo de Aproximaciones por Diferencias" << std::endl << std::endl;
@@ -164,5 +170,16 @@ int main()
     }
     std::cout << "----------------------------------" << std::endl << std::endl;
     std::cout << "TERMINAR" << std::endl;
+
+    float result = 0;
+    float h = 1;
+    float point = 2;
+    for (int K = 1; K <= KM; ++K)
+    {
+        float FINV = 1.0 / F;
+        result += (CF[K] / (FINV * pow(h,KDR))) * function(point + EL[K] * h);
+    }
+    std::cout << result << std::endl;
+
     return EXIT_SUCCESS;
 }
