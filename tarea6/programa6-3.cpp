@@ -25,7 +25,7 @@ void PIVOT(int N, std::vector<std::vector<float>>& A, std::vector<std::vector<fl
     }
     std::swap(IP[J], IP[JJ]);
 
-    std::cout << "\nNUMERO DE PIVOTEOS = " << IPC << std::endl;
+    std::cout << "\nNumero de Pivoteos = " << IPC << std::endl;
 }
 
 int main()
@@ -44,7 +44,7 @@ int main()
 
     std::cout << "\nN = " << N << std::endl;
     std::cout << "\n- - - - - - - - - - - - - - - -" << std::endl;
-    std::cout << "MATRIZ ORIGINAL:" << std::endl << std::endl;
+    std::cout << "Matriz Original:" << std::endl << std::endl;
     for (int I = 0; I < N; ++I)
     {
         for (int J = 0; J < N; ++J)
@@ -55,7 +55,7 @@ int main()
     }
     std::cout << "- - - - - - - - - - - - - - - -" << std::endl;
 
-    std::cout << "\nSI SE DESEA EL PIVOTEO, OPRIMA 1; DE LO CONTRARIO OPRIMA 0: ";
+    std::cout << "\nSe se Desea el Pivoteo, Oprima 1; de lo Contrario Oprima 0: ";
     std::cin >> NP;
 
     for (int I = 0; I < N; ++I)
@@ -103,7 +103,7 @@ int main()
         }
     }
 
-    std::cout << "\nPERMUTACION: ";
+    std::cout << "\nPermutacion: ";
     for (int I = 0; I < N; ++I)
     {
         std::cout << IP[I] << " ";
@@ -111,7 +111,7 @@ int main()
     std::cout << std::endl;
 
     std::cout << "\n- - - - - - - - - - - - - - - -" << std::endl;
-    std::cout << "MATRICES LU EN FORMA COMPACTA:" << std::endl << std::endl;
+    std::cout << "Matrices LU en Forma Compacta:" << std::endl << std::endl;
     for (int I = 0; I < N; ++I)
     {
         for (int M = 0; M < N; ++M)
@@ -127,7 +127,7 @@ int main()
         DE *= EL[I][I];
     }
     if (IPC == static_cast<int>(IPC / 2) * 2) DE = -DE;
-    std::cout << "\nDETERMINANTE = " << DE << std::endl;
+    std::cout << "\nDeterminante = " << DE << std::endl;
     std::cout << "- - - - - - - - - - - - - - - -" << std::endl;
 
     return 0;
