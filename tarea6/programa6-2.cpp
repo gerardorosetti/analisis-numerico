@@ -3,36 +3,41 @@
 #include <cmath>
 #include <vector>
 
-// Function prototype
 void GAUSS(int N, std::vector<std::vector<double>>& A);
 
 int main() {
     const int N = 3;
     std::vector<std::vector<double>> A(11, std::vector<double>(21, 0.0));
 
-    // Initialize matrix A with given values
     A[1] = {0, 2, 1, -3, 1, 0, 0};
     A[2] = {0, -1, 3, 2, 0, 1, 0};
     A[3] = {0, 3, 1, -3, 0, 0, 1};
 
-    std::cout << "\nCsL/F6 -2 INVERSION DE UNA MATRIZ\n";
-    std::cout << "\nLA MATRIZ ORIGINAL\n\n";
+    int space = 14;
+    std::cout << std::fixed << std::setprecision(5) << std::scientific;
+
+    std::cout << "\nINVERSION DE UNA MATRIZ" << std::endl << std::endl;
+    std::cout << "\n- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
+    std::cout << "LA MATRIZ ORIGINAL:\n\n";
     for (int I = 1; I <= N; ++I) {
         for (int J = 1; J <= 3; ++J) {
-            std::cout << std::setw(12) << std::setprecision(5) << std::scientific << A[I][J];
+            std::cout << std::setw(space) << A[I][J];
         }
-        std::cout << '\n';
+        std::cout << std::endl;
     }
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
 
     GAUSS(N, A);
 
-    std::cout << "\nMATRIZ INVERSA\n\n";
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
+    std::cout << "MATRIZ INVERSA:" << std::endl << std::endl;
     for (int I = 1; I <= N; ++I) {
         for (int J = N + 1; J <= N * 2; ++J) {
-            std::cout << std::setw(12) << std::setprecision(5) << std::scientific << A[I][J];
+            std::cout << std::setw(space) << A[I][J];
         }
-        std::cout << '\n';
+        std::cout << std::endl;
     }
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - -" << std::endl;
 
     return 0;
 }
@@ -43,7 +48,7 @@ void GAUSS(int N, std::vector<std::vector<double>>& A) {
         EPS /= 2.0;
     }
     EPS *= 2;
-    std::cout << "EPSILON DE LA MAQUINA =" << EPS << '\n';
+    std::cout << "\nEPSILON DE LA MAQUINA = " << EPS << std::endl;
     double EPS2 = EPS * 2;
     double DET = 1.0;
     int PV;
@@ -63,7 +68,7 @@ void GAUSS(int N, std::vector<std::vector<double>>& A) {
             DET = -DET;
         }
         if (A[I][I] == 0) {
-            std::cout << "LA MATRIZ ES SINGULAR\n";
+            std::cout << "\nLA MATRIZ ES SINGULAR" << std::endl;
             return;
         }
 
@@ -82,10 +87,10 @@ void GAUSS(int N, std::vector<std::vector<double>>& A) {
     for (int I = 1; I <= N; ++I) {
         DET *= A[I][I];
     }
-    std::cout << "\nDETERMINANTE " << DET << "\n\n";
+    std::cout << "\nDETERMINANTE = " << DET << std::endl << std::endl;
 
     if (A[N][N] == 0) {
-        std::cout << "LA MATRIZ ES SINGULAR\n";
+        std::cout << "\nLA MATRIZ ES SINGULAR" << std::endl;
         return;
     }
 
