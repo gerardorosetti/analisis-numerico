@@ -3,42 +3,70 @@
 #include <vector>
 #include <iomanip>
 
-void PIVOT(int N, std::vector<std::vector<float>>& A, std::vector<std::vector<float>>& EL, int J, std::vector<int>& IP, int& IPC)
+void luDecomposition(std::vector<std::vector<double>>& A, std::vector<std::vector<double>>& L, std::vector<std::vector<double>>& U, std::vector<int>& P, bool pivot)
 {
-    float T = 0;
-    int JJ = J;
-    for (int K = J; K < N; ++K)
+    int n = A.size();
+
+    L = std::vector<std::vector<double>>(n, std::vector<double>(n, 0.0));
+    U = std::vector<std::vector<double>>(n, std::vector<double>(n, 0.0));
+    for (int i = 0; i < n; ++i)
     {
-        if (std::abs(A[K][J]) > T)
+        L[i][i] = 1.0;
+        for (int j = 0; j < n; ++j)
         {
-            JJ = K;
-            T = std::abs(A[K][J]);
+            U[i][j] = A[i][j];
         }
     }
-    if (JJ == J) return;
 
-    IPC += 1;
-    for (int M = 0; M < N; ++M)
+    P = std::vector<int>(n);
+    for (int i = 0; i < n; ++i)
     {
-        std::swap(A[J][M], A[JJ][M]);
-        std::swap(EL[J][M], EL[JJ][M]);
+        P[i] = i;
     }
-    std::swap(IP[J], IP[JJ]);
 
-    std::cout << "\nNumero de Pivoteos = " << IPC << std::endl;
+    for (int k = 0; k < n - 1; ++k)
+    {
+        int maxIndex = k;
+        double maxVal = std::abs(U[k][k]);
+        for (int i = k + 1; i < n; ++i)
+        {
+            if (std::abs(U[i][k]) > maxVal)
+            {
+                maxVal = std::abs(U[i][k]);
+                maxIndex = i;
+            }
+        }
+        if (maxIndex != k && pivot)
+        {
+            std::swap(P[k], P[maxIndex]);
+            std::swap(U[k], U[maxIndex]);
+            for (int i = 0; i < k; ++i)
+            {
+                std::swap(L[k][i], L[maxIndex][i]);
+            }
+        }
+        for (int i = k + 1; i < n; ++i)
+        {
+            L[i][k] = U[i][k] / U[k][k];
+            for (int j = k; j < n; ++j)
+            {
+                U[i][j] -= L[i][k] * U[k][j];
+            }
+        }
+    }
 }
 
 int main()
 {
     const int N = 3;
-    std::vector<std::vector<float>> A(N, std::vector<float>(N, 0));
-    std::vector<std::vector<float>> EL(N, std::vector<float>(N, 0));
-    std::vector<int> IP(N, 0);
-    float L;
-    int NP, IPC = 1;
+    std::vector<std::vector<double>> A(N, std::vector<double>(N, 0));
+    std::vector<std::vector<double>> L, U;
+    std::vector<int> P;
     int space = 10;
 
     A = {{2, 1, -3}, {-1, 3, 2}, {3, 1, -3}};
+    // A = {{2, -1, 0}, {-1, 2, -1}, {0, -1, 2}};
+    // A = {{2, -1, 0}, {-3, 4, -1}, {0, -1, 2}};
 
     std::cout << std::fixed << std::setprecision(5);
 
@@ -55,79 +83,43 @@ int main()
     }
     std::cout << "- - - - - - - - - - - - - - - -" << std::endl;
 
-    std::cout << "\nSe se Desea el Pivoteo, Oprima 1; de lo Contrario Oprima 0: ";
+    std::cout << "\nSe se Desea el Pivoteo, Oprima 1; de lo Contrario Oprima Cualquier Tecla: ";
+    int NP;
     std::cin >> NP;
 
-    for (int I = 0; I < N; ++I)
-    {
-        IP[I] = I + 1;
-        for (int J = 0; J < N; ++J)
-        {
-            EL[I][J] = 0;
-        }
-    }
-
-    int J = 1;
-    if (NP == 1) PIVOT(N, A, EL, J, IP, IPC);
-
-    for (J = 0; J < N; ++J)
-    {
-        EL[0][J] = A[0][J];
-    }
-
-    for (int I = 1; I < N; ++I)
-    {
-        EL[I][0] = A[I][0] / EL[0][0];
-    }
-
-    for (int M = 1; M < N; ++M)
-    {
-        if (NP == 1) PIVOT(N, A, EL, M, IP, IPC);
-        for (J = M; J < N; ++J)
-        {
-            float S = 0;
-            for (int K = 0; K < M; ++K)
-            {
-                S += EL[M][K] * EL[K][J];
-            }
-            EL[M][J] = A[M][J] - S;
-        }
-        for (int I = M + 1; I < N; ++I)
-        {
-            float S = 0;
-            for (int K = 0; K < M; ++K)
-            {
-                S += EL[I][K] * EL[K][M];
-            }
-            EL[I][M] = (A[I][M] - S) / EL[M][M];
-        }
-    }
+    luDecomposition(A, L, U, P, NP == 1);
 
     std::cout << "\nPermutacion: ";
     for (int I = 0; I < N; ++I)
     {
-        std::cout << IP[I] << " ";
+        std::cout << P[I] + 1 << " ";
     }
     std::cout << std::endl;
 
     std::cout << "\n- - - - - - - - - - - - - - - -" << std::endl;
     std::cout << "Matrices LU en Forma Compacta:" << std::endl << std::endl;
+    std::vector<std::vector<double>> LU(N, std::vector<double>(N, 0));
+    double det = 1.0;
     for (int I = 0; I < N; ++I)
     {
         for (int M = 0; M < N; ++M)
         {
-            std::cout << std::setw(space) << EL[I][M] ;
+            if(I > 0 && M <= I)
+            {
+                std::cout << std::setw(space) << L[I][M];
+                LU[I][M] = L[I][M];
+            }
+            else
+            {
+                std::cout << std::setw(space) << U[I][M];
+                LU[I][M] = U[I][M];
+            }
+            if (I == M) det *= U[I][M];
         }
         std::cout << std::endl;
     }
 
-    float DE = 1;
-    for (int I = 0; I < N; ++I)
-    {
-        DE *= EL[I][I];
-    }
-    if (IPC == static_cast<int>(IPC / 2) * 2) DE = -DE;
-    std::cout << "\nDeterminante = " << DE << std::endl;
+    std::cout << "\nDeterminante = " << ((det < 0) ? -det : det) << std::endl;
     std::cout << "- - - - - - - - - - - - - - - -" << std::endl;
 
     return 0;
