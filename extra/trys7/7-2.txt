@@ -1,0 +1,145 @@
+
+        DIMENSION A(0:10,0:10),U(0:l0),T(0:10,0:10)
+        DIMENSION G(0:10) ,EI(0:10,0:10)
+        COMMON L
+3       PRINT *
+        PRINT *, 'CSL/V7 -2 HOUSEHOLDER/TRIDIAGONAL'
+        PRINT *, 'SOLO PARA MATRICES SIMETRICAS = '
+        PRINT *
+
+20      N = 4
+        DATA (A(1,J),J=1,4)/4, 3, 2, 1/
+        DATA (A(2,J),J=1,4)/3, 3, 2, 1/
+        DATA (A(3,J),J=1,4)/2, 2, 2, 1/
+        DATA (A(4,J),J=1,4)/1 ,1, 1, 1/
+        PRINT*, 'REDUCCION DE UNA MATRIZ A LA FORMA DE HESSENBERG
+        PRINT * ,' o TRIDIAGONAL MEDIANTE EL ESQUEMA DE HOUSEHOLDER' PRINT *
+        PRINT *' MATRIZ ORIGINAL (DEBE SER SIMETRICA)
+        PRINT *
+        DO I=1,N
+            PRINT 52, (A(I,J) ,J=1,N)
+52          FORMAT(1X, 1P6E12.5)
+        END DO
+        DO IR = 1 , N - 2
+            S=0
+            DO I=1,N
+                U(I)=0
+                IF (I .GT. IR+1) U(I)=A(I,IR)
+                IF (I .GT. IR) S=S+A(I,IR)*A(I,IR)
+            END DO
+            W= 1
+            IF (A(IR+1,IR) .LT. 0) W=-1
+            SSR=SQRT (S)
+            PRINT *
+            H=S+ ABS(A(IR+1, IR))*SSR
+            U(IR+1)=A(IR+1,IR)+SSR*W
+            UAU=0
+            DO I=1,N
+                DO J=1,N
+                    UAU=UAU+U(I) *A(I,J) *U(J)
+                    IF ((I .LE. IR).AND.(J .LE. IR)) THEN
+                        T(I,J) =A(I,J)
+                        GOTO 710
+                    ENDIF
+                    IF ((J.EQ.IR).AND.(I .GE. IR+2)) THEN
+                        T(I,J)=0
+                        GOTO 710
+                    ENDIF
+                    B23=0
+                    DO K=1,N
+                        B23=B23- (U(I) *A(K,J) +A(I,K) *U(J)) *U(K)
+                    END DO
+                    T(I,J)=A(I,J) +B23/H
+710             END DO
+            END DO
+            UAU=UAU/H/H
+            DO I=1,N
+                DO J=1,N
+                    A(I,J)=T(I,J)+UAU*U(I)*U(J)
+                    IF (ABS(A(I,J)) .LT. .000001) A(I,J)=0
+                END DO
+            END DO
+        END DO
+        PRINT *, 'MATRIZ DE HESSENBERG O TRIDIAGONAL'
+        PRINT *
+        DO I=1,N
+            PRINT 52, (A (I, J) , J=1, 4)
+        END DO
+        PRINT *
+        PRINT *, 'PARA CONTINIJAR, OPRIMA 1 Y LA TECLA ENTER'
+        READ DUMM
+        PRINT *
+        KM = N
+        DO L=1,KM
+            IF (L.EQ.1) THEN
+                El (1, 1) =A (1, 1)
+            ELSE
+                DO J=1,L
+                    XL=EI (L-1,J-1)
+                    XH=EI (L-1,J)
+                    KM=J
+                    CALL BISEC(G,A,XL,XH,XM)
+                    El (L,J)=XM
+                END DO
+            END IF
+            EI (L, 0)=-99
+            EI (L,L+1)=99
+            IF (L.NE.N) THEN
+                PRINT *
+                PRINT 2130, L,L
+2130            FORMAT(' VALORES PROPIOS DE LA' ,I2, ' X' ,I2,
+    1                           ' SUBMATRIZ PRINCIPAL')
+            ELSE
+                PRINT *
+                PRINT *, 'RESULTADOS FINALES (VALORES PROPIOS DE LA MATRIZ COMPLETA) PRINT *,'
+            END IF
+            PRINT 52, (EI(L,I),I=1,L)
+        END DO
+        PRINT *,'-------------------------'
+        PRINT *
+        PRINT *
+        STOP
+        END
+
+        SUBROUTINE BISEC(G,A,XL,XH,XM)
+        DIMENSION A (0: 10, 0 : 10) , G (0 : 10)
+        COMMON L
+        KA=0
+        CALL DETERM(G,A,XL,YL)
+        CALL DETERM(G,A,XH,YH)
+80      KA=KA+1
+        IF (KA . GT. 99) RETURN
+        DX=XH-XL
+        IF (DX .LT. .0000001) RETURN
+        IF (DX .GT. 1) THEN
+            XM= (XL+XH)/2
+            CALL DETERM(G,A,XM,YM)
+            GOTO 30
+        END IF
+        XB=XM
+        XM= (XL*YH-XH*YL) / (YH-YL)
+        CALL DETERM(G, A, XM, YM)
+        IF (ABS(XB-XM) .LT. .000001) RETURN
+30      IF (YL*YM .LT. 0) THEN
+            XH=XM
+            YH=YM
+            GOTO 80
+        ENDIF
+        XL=XM
+        YL=YM
+        GOTO 80
+        END
+
+        SUBROUTINE DETERM (G, A, X, SL)
+        DIMENSION A(0:10, 0:10) ,G(0:10)
+        COMMON L
+        G(0)=1
+        IF (L.EQ.1) RETURN
+        G(1)=A(1,1) - X
+        IF (L.EQ.1) RETURN
+        DO K=2,L
+            G(K)= (A(K,K)-X)*G(K-1)-A(K,K-1)*A(K,K-1)*G(K-2)
+        END DO
+        SL=G(L)
+        RETURN
+        END
