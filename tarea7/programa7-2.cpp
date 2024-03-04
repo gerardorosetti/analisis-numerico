@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 
 int L;
 
@@ -123,12 +124,15 @@ int main()
         }
     }
 
+    short space = 15;
+    std::cout << std::fixed << std::setprecision(5) << std::scientific;
+
     std::cout << "MATRIZ TRIDIAGONAL RESULTANTE:\n";
     for (int I = 1; I <= N; ++I)
     {
         for (int J = 1; J <= N; ++J)
         {
-            std::cout << A[I][J] << " ";
+            std::cout << std::setw(space) << A[I][J];
         }
         std::cout << "\n";
     }
@@ -141,7 +145,9 @@ int main()
         if (L == 1)
         {
             EI[1][1] = A[1][1];
-        } else {
+        }
+        else
+        {
             for (int J = 1; J <= L; ++J)
             {
                 double XL = EI[L - 1][J - 1];
@@ -156,16 +162,19 @@ int main()
         EI[L][L + 1] = 99;
         if (L != N)
         {
-            std::cout << "\nVALORES PROPIOS DE LA SUBMATRIZ PRINCIPAL " << L << " x " << L << "\n";
-        } else {
-            std::cout << "\nRESULTADOS FINALES (VALORES PROPIOS DE LA MATRIZ COMPLETA)\n";
+            std::cout << "\nVALORES PROPIOS DE LA SUBMATRIZ PRINCIPAL " << L << " x " << L  << std::endl;
+        }
+        else
+        {
+            std::cout << "\nRESULTADOS FINALES (VALORES PROPIOS DE LA MATRIZ COMPLETA)" << std::endl;
+            std::cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - -"  << std::endl;
         }
         for (int I = 1; I <= L; ++I)
         {
             std::cout << EI[L][I] << " ";
         }
-        std::cout << "\n";
+        std::cout  << std::endl;
     }
-    std::cout << "-------------------------\n";
+    std::cout << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << std::endl;
     return 0;
 }
