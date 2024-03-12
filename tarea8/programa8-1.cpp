@@ -25,7 +25,9 @@ int main()
         std::cout << " DE EL NUMERO DE FUNCIONES EN LA COMBINACION LINEAL" << std::endl;
         std::cout << " (POR EL MOMENTO SOLO SE DISPONE DE CUATRO FUNCIONES)" << std::endl;
         std::cin >> M;
-    } else {
+    }
+    else
+    {
         std::cout << " DE EL ORDEN DEL POLINOMIO" << std::endl;
         std::cin >> NORD;
         M = NORD + 1;
@@ -55,7 +57,9 @@ int main()
                 A[K][M + 1] += Y[I] * FK;
             }
         }
-    } else {
+    }
+    else
+    {
         // Ajuste Polinomial
         for (int K = 1; K <= M; ++K)
         {
@@ -65,12 +69,12 @@ int main()
                 {
                     int JJ = K - 1 + J - 1;
                     double YY = 1.0;
-                    if (JJ != 0) YY = pow(X[I], JJ);
+                    if (JJ != 0) YY = std::pow(X[I], JJ);
                     A[K][J] += YY;
                 }
                 int JEX = K - 1;
                 double YY = 1.0;
-                if (JEX != 0) YY = pow(X[I], JEX);
+                if (JEX != 0) YY = std::pow(X[I], JEX);
                 A[K][M + 1] += Y[I] * YY;
             }
         }
@@ -81,7 +85,7 @@ int main()
     {
         for (int J = 1; J <= M + 1; ++J)
         {
-            std::cout << std::setw(11) << std::setprecision(3) << std::scientific << A[I][J] << " ";
+            std::cout << std::setw(11) << std::setprecision(4) << std::scientific << A[I][J] << " ";
         }
         std::cout << std::endl;
     }
@@ -91,19 +95,23 @@ int main()
     std::cout << "DETERMINACION DE COEFICIENTES" << std::endl;
     if (LP == 1)
     {
-        std::cout << "FUNCION COEFICIENTE" << std::endl;
-    } else {
-        std::cout << "POTENCIA COEFICIENTE" << std::endl;
+        std::cout << "FUNCION" << std::setw(12) << "COEFICIENTE" << std::endl;
     }
-    std::cout << "- - - - - - - - -" << std::endl;
+    else
+    {
+        std::cout << "POTENCIA" << std::setw(12) << "COEFICIENTE" << std::endl;
+    }
+    std::cout << "- - - - - - - - - - -" << std::endl;
 
     for (int I = 1; I <= M; ++I)
     {
         if (LP == 1)
         {
-            std::cout << std::setw(4) << I << std::setw(12) << std::setprecision(6) << std::fixed << A[I][M + 1] << std::endl;
-        } else {
-            std::cout << std::setw(4) << I - 1 << std::setw(12) << std::setprecision(6) << std::fixed << A[I][M + 1] << std::endl;
+            std::cout << std::setw(4) << I << std::setw(14) << std::setprecision(6) << std::fixed << A[I][M + 1] << std::endl;
+        }
+        else
+        {
+            std::cout << std::setw(4) << I - 1 << std::setw(14) << std::setprecision(6) << std::fixed << A[I][M + 1] << std::endl;
         }
     }
 
@@ -111,9 +119,9 @@ int main()
 
     // Evaluaciond del error
     std::cout << "EVALUACION DEL ERROR" << std::endl;
-    std::cout << "----------------------------------" << std::endl;
-    std::cout << " I X(I) Y(I) POLINOMIO DESVIACION" << std::endl;
-    std::cout << "----------------------------------" << std::endl;
+    std::cout << "----------------------------------------------" << std::endl;
+    std::cout << std::setw(4) << "I" <<  std::setw(8) << "X(I)" << std::setw(9) << "Y(I)" << std::setw(13) << "POLINOMIO" << std::setw(12) << "DESVIACION" << std::endl;
+    std::cout << "----------------------------------------------" << std::endl;
     for (int I = 0; I < IN; ++I)
     {
         GG[I] = 0.0;
@@ -122,13 +130,15 @@ int main()
             if (LP == 1)
             {
                 GG[I] += A[K][M + 1] * fun(K, X[I]);
-            } else {
-                GG[I] += A[K][M + 1] * pow(X[I], K - 1);
+            }
+            else
+            {
+                GG[I] += A[K][M + 1] * std::pow(X[I], K - 1);
             }
         }
         std::cout << std::setw(4) << I + 1 << std::setw(8) << std::setprecision(2) << std::fixed << X[I] << std::setw(10) << std::setprecision(5) << Y[I] << std::setw(12) << std::setprecision(7) << GG[I] << std::setw(11) << std::setprecision(6) << Y[I] - GG[I] << std::endl;
     }
-    std::cout << "----------------------------" << std::endl;
+    std::cout << "----------------------------------------------" << std::endl;
 
     return 0;
 }
@@ -161,6 +171,7 @@ void gauss(int N, std::vector<std::vector<double>>& A)
             }
         }
     }
+    //sustitucion hacia atras
     if (A[N][N] == 0) return;
     A[N][N + 1] /= A[N][N];
     for (int NV = N - 1; NV >= 1; --NV)
@@ -178,7 +189,7 @@ double fun(int K, double X)
 {
     if (K == 1) return 1;
     if (K == 2) return X;
-    if (K == 3) return sin(X);
-    if (K == 4) return exp(X);
+    if (K == 3) return std::sin(X);
+    if (K == 4) return std::exp(X);
     return 0;
 }
