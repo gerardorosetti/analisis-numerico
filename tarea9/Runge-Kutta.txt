@@ -1,0 +1,55 @@
+Método de Runge-Kutta de segundo orden
+A) Explicaciones:
+Este programa calcula la soluciOn de la EDO de segundo orden mediante el método de Runge-Kutta de segundo orden. Las constantes dadas en el ejemplo 9.6, se definen en las instrucciones DATA. Las condiciones iniciales estãn dadas en YB y ZB. Los resultados obtenidos se imprimen después de cada 50 pasos. Cap. 9 Prob. de ecuaciones diferenciales ordinarias con valor o condición inicial
+B) Variables:
+ Y, Z: y y z para un nuevo paso
+ YB, ZB: y y z del paso anterior
+ BM, KM: a y b en la ecuación (9.3.10)
+C) Listado:
+C   CSL/F9 -1 . FOR ESQUEMA DE RUNGE-KUTTA DE SEGUNDO ORDEN
+    (SOLUCION DEL PROBLEMA DEL EJEMPLO 9.6 INCISO b)
+    REAL*8 M,K,K1,K2,L1,L2,KM
+    PRINT *, 'CSL/F9 -1 ESQUEMA DE RUNGE-KUTTA DE SEGUNDO ORDEN'
+    DATA T, K, M, B, Z, Y, H
+    % /0.0,100.0, 0.5, 10.0, 0.0, 1.0, 0.001/
+    PRINT *, '     T       Y       Z'
+    PRINT 1,T,Y,Z
+    FORMAT( F10.5, 1P2E13.6)
+    KM=K/ M
+    BM=B/M
+    DO N=1,20
+        DO KOUNT=1, 50
+            T = T + H
+            K1 = H * Z
+            L1 = -H * (BM * Z + KM * Y)
+            K2 = H * (Z + L1)
+            L2 = -H * (BM * (Z+L1) + KM * (Y + K1))
+            Y = Y + (K1 + K2) /2
+            Z= Z + (L1 + L2) /2
+        END DO
+        PRINT 1,T,Y,Z
+    END DO
+    END
+D) Ejemplo de salida
+CSL/F9-1 ESQUEMA DE RUNGE-KUTTA DE SEGUNDO ORDEN
+    T         Y           Z
+0.00000 1.000000E+00 0.000000E+00
+0.05000 8.230488E-01-5.815448E+00
+0.10000 5.083122E-01-6.190855E+00
+0.15000 2.383530E-01-4.451182E+00
+0.20000 6.674805E-02-2.461108E+00
+0.25000-1.662533E-02-9 .825372E-01
+0.30000-4.225293E-02-1.406029E-01
+0.35000-3.886459E-02 2.117637E-01
+0.40000-2 .582995E-02 2.771569E-01
+0.45000-1. 320036E-02 2. 171473E- 01
+0.50000-4.550497E-03 1.292080E-01
+0.55000 1.172962E-05 5.766744E-02
+0.60000 1.686464E-03 1.385871E-02
+0.65000 1.791016E-03-6.460617E-03
+0.69999 1.286237E-03-1.197583E-02
+0.74999 7.104116E-04-1.037225E-02
+0.79999 2.831070E-04-6.636304E-03
+0.84999 4.004550E-05-3.249089E-03
+0.89999-6.151515E-05-1.017550E-03
+0.94999-8.021756E-05 1.119957E-04
