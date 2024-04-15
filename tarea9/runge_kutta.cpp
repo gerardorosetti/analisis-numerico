@@ -32,8 +32,8 @@ int main() {
     double t0 = 0.0; // Valor inicial de t
     double y0 = 2.0; // Valor inicial de y
     double z0 = 1.0; // Valor inicial de z
-    double h = 0.1; // Tamaño del paso
-    double tn = 1.0; // Valor final de t
+    double h = 0.001; // Tamaño del paso
+    double tn = 5.0; // Valor final de t
 
     rungeKutta(t0, y0, z0, h, tn);
 
