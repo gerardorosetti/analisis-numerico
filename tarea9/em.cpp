@@ -2,9 +2,9 @@
 #include <cmath>
 
 // Parámetros del sistema
-double m = 1.0;
-double ka = 3.0;
-double kr = 2.0;
+const double m = 1.0;
+const double ka = 3.0;
+const double kr = 2.0;
 
 // Definición de la función f(t)
 double f(double t) {
@@ -26,14 +26,12 @@ int main() {
     double z = 1.0;   // Condición inicial de z (y')
 
     double h = 0.01;   // Tamaño del paso
-    double tn = 4.99;
+    double tn = 4.99;  // tiempo final
 
     // Iteración del Método de Euler Modificado
-    while (t < tn) {  // <-- Modificar el tiempo final según sea necesario
+    while (t < tn) {
         eulerModificado(t, y, z, h);
         t += h;
-
-        // Imprimir o almacenar los resultados, según sea necesario
         std::cout << "t = " << t << ", y = " << y << ", z = " << z << std::endl;
     }
 
