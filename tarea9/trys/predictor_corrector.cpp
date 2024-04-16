@@ -14,11 +14,9 @@ void predictorCorrector(double t, double y, double z, double h, int n, double m,
 
     for (int i = 0; i * h < n; i++)
     {
-        // Predictor Step using Euler's method
         y_next_pred = y + h * z;
         z_next_pred = z + h * f(t, y, z, m, ka, kr);
 
-        // Corrector Step using Euler's method
         z_next = z + h * f(t + h, y_next_pred, z_next_pred, m, ka, kr);
         y_next = y + h * z;
 
