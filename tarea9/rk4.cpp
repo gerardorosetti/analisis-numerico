@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <chrono>
 
 // Parámetros del sistema
 const double m = 1.0;
@@ -32,6 +33,9 @@ void rungeKutta(double t, double& y, double& z, double h) {
 }
 
 int main() {
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     double t = 0.0;   // Tiempo inicial
     double y = 2.0;   // Condición inicial de y
     double z = 1.0;   // Condición inicial de z (y')
@@ -45,6 +49,11 @@ int main() {
         t += h;
         std::cout << "t = " << t << ", y = " << y << ", z = " << z << std::endl;
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration_ms = end - start;
+    std::cout << "Tiempo de ejecución: " << duration_ms.count() << " ms" << std::endl;
 
     return 0;
 }
