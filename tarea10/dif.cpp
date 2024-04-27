@@ -62,7 +62,6 @@ void solveHeatEquation()
 
     for (int i = 1; i <= N; i++)
     {
-        //T[i] = T[i - 1] + h * b * (T_room - T[i - 1]);
         T[i] = T[i - 1] + h * f1(T[i - 1], b);
     }
 
@@ -73,7 +72,6 @@ void solveHeatEquation()
 
     for (int i = 1; i <= N; i++)
     {
-        //T[i] = T[i - 1] + h * b * (T_room - T[i - 1]);
         T[i] = T[i - 1] + h * f1(T[i - 1], b);
     }
 
@@ -85,7 +83,6 @@ void solveHeatEquation()
 
     for (int i = 1; i <= N2; i++)
     {
-        //T2[i] = T2[i - 1] + h * b * (T_oven - T2[i - 1]);
         T2[i] = T2[i - 1] + h * f2(T2[i - 1], b);
     }
 
