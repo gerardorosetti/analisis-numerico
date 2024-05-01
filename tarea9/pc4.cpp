@@ -34,6 +34,8 @@ void calcular_valores_previos(double &y, double &z, double &t, double h, double 
         z = z_temp;
         t = t_temp;
     }
+
+    t = 0;
 }
 
 void predictor_corrector_adams_4th_order(double &y, double &z, double &t, double h, double m, double ka, double kr, double y_prev, double z_prev, double y_prev2, double z_prev2, double y_prev3, double z_prev3) {
@@ -54,6 +56,9 @@ void predictor_corrector_adams_4th_order(double &y, double &z, double &t, double
 }
 
 int main() {
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     double y = 2.0;  // Valor inicial de y
     double z = 1.0;  // Valor inicial de z
     double t = 0.0;  // Valor inicial de t
@@ -62,6 +67,7 @@ int main() {
     const double ka = 3.0;
     const double kr = 2.0;
     double tn = 4.99; // Tiempo final
+    //double tn = 5; // Tiempo final
 
     // Calcular los valores previos necesarios
     double y_prev, z_prev, y_prev2, z_prev2, y_prev3, z_prev3;
@@ -78,6 +84,12 @@ int main() {
         z_prev = z;
         std::cout << "t = " << t << ", y = " << y << ", z = " << z << std::endl;
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double, std::milli> duration_ms = end - start;
+    std::cout << "Tiempo de ejecución: " << duration_ms.count() << " ms" << std::endl;
+
 
     return 0;
 }

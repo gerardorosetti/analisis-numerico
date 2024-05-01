@@ -3,8 +3,8 @@
 #include <cmath>
 #include <iomanip>
 
-const double T0 = 70.0; //Temperatura al Tiempo 0 (0 minutos) (Condicion de frontera inicial)
-const double T5 = 45.0; //Temperatura al Tiempo 5 (5 minutos) (Condicion de frontera final)
+const double T0 = 70.0; //Temperatura al Tiempo 0 (0 minutos) (Valor de frontera inicial)
+const double T5 = 45.0; //Temperatura al Tiempo 5 (5 minutos) (Valor de frontera final)
 const double T_room = 15.0; //Temperatura de la habitacion
 const double T_oven = 70.0; //Temperatura del horno
 const double h = 0.000001; // Paso de tiempo
@@ -55,7 +55,7 @@ void solveHeatEquation()
     std::vector<double> T(N + 1);
 
     T[0] = T0;
-    T[N] = T5;
+    //T[N] = T5;
 
     for (int i = 1; i <= N; i++)
     {
